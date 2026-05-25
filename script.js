@@ -1,8 +1,13 @@
+// ============================================================
+// FOXXY ULTIMATE 100% - FINAL SCRIPT
+// Password: foxxy2024 (3 percobaan salah → redirect)
+// ============================================================
+
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import L from 'leaflet';
 
-// ========== GLOBAL ==========
+// ========== GLOBAL VARIABLES ==========
 let hacker = false, maxMode = false;
 let chatHistory = [];
 let realtimeInterval = null;
@@ -14,7 +19,7 @@ let nightVision = false;
 let satelliteMode = false;
 let alarm = null;
 
-// DOM
+// DOM Elements
 const chatBox = document.getElementById('chatBox');
 const userMsg = document.getElementById('userMsg');
 const sendBtn = document.getElementById('sendMsgBtn');
@@ -22,6 +27,49 @@ const voiceBtn = document.getElementById('voiceBtn');
 const hackerToggle = document.getElementById('hackerToggle');
 const newsFeed = document.getElementById('newsFeed');
 const tickerDiv = document.getElementById('ticker');
+
+// ========== PASSWORD DENGAN 3 PERCOBAAN (AUTO REDIRECT) ==========
+let passwordAttempts = 0;
+
+function checkBiometric() {
+    const inputPass = prompt("🔐 MASUKKAN KODE AKSES KOMANDAN:");
+    
+    if (inputPass === "foxxy2024") {
+        document.getElementById("biometricModal").style.display = "none";
+        startFoxxySystems();
+        addMessage('🔓 Akses granted. Selamat datang, Komandan.', false);
+        passwordAttempts = 0;
+    } else {
+        passwordAttempts++;
+        const remaining = 3 - passwordAttempts;
+        
+        if (passwordAttempts >= 3) {
+            alert("⛔ AKSES DITOLAK! 3 kali percobaan salah.\nAnda akan dialihkan keluar.");
+            window.location.href = "https://www.google.com";
+        } else {
+            alert(`❌ AKSES DITOLAK! Kode salah.\n⚠️ Sisa percobaan: ${remaining} kali lagi.`);
+            checkBiometric();
+        }
+    }
+}
+
+function startFoxxySystems() {
+    console.log("✅ Sistem Foxxy aktif, Komandan.");
+}
+
+// Pasang event listener ke tombol verify
+const verifyBtn = document.getElementById("biometricBtn");
+if (verifyBtn) verifyBtn.onclick = checkBiometric;
+
+// Reset counter jika modal ditutup paksa (klik di luar modal)
+const modalBg = document.getElementById("biometricModal");
+if (modalBg) {
+    modalBg.addEventListener("click", function(e) {
+        if (e.target === modalBg) {
+            passwordAttempts = 0;
+        }
+    });
+}
 
 // ========== 3D EARTH BACKGROUND ==========
 const container = document.createElement('div');
@@ -50,31 +98,22 @@ function animate() { requestAnimationFrame(animate); controls.update(); ring.rot
 animate();
 window.addEventListener('resize', () => { renderer.setSize(window.innerWidth, window.innerHeight); camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); });
 
-// ========== BIOMETRIC LOCK ==========
-async function checkBiometric() {
-    try {
-        if ('PublicKeyCredential' in window && window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable) {
-            const available = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
-            if (available) {
-                const credential = await navigator.credentials.get({
-                    publicKey: {
-                        challenge: new Uint8Array(32),
-                        rpId: window.location.hostname,
-                        allowCredentials: [],
-                        userVerification: 'required'
-                    }
-                });
-                if (credential) document.getElementById('biometricModal').style.display = 'none';
-                else throw new Error('Verifikasi gagal');
-            } else throw new Error('Biometric not available');
-        } else throw new Error('WebAuthn not supported');
-    } catch(e) {
-        const pwd = prompt('🔐 Masukkan kode akses (foxxy2024):');
-        if (pwd === 'foxxy2024') document.getElementById('biometricModal').style.display = 'none';
-        else alert('Akses ditolak!');
-    }
-}
-document.getElementById('biometricBtn').onclick = checkBiometric;
+// ========== SYSTEM STATS (DUMMY REAL-TIME) ==========
+let fps = 60, cpu = 18, ram = 42, latency = 38;
+setInterval(() => {
+    cpu = Math.min(92, cpu + (Math.random() - 0.5) * 4);
+    ram = Math.min(86, ram + (Math.random() - 0.5) * 3);
+    fps = Math.min(75, Math.max(28, fps + (Math.random() - 0.5) * 4));
+    latency = Math.min(160, Math.max(28, latency + (Math.random() - 0.5) * 6));
+    document.getElementById('cpuVal').innerText = Math.floor(cpu);
+    document.getElementById('cpuBar').style.width = cpu + '%';
+    document.getElementById('ramVal').innerHTML = Math.floor(ram) + '%';
+    document.getElementById('ramBar').style.width = ram + '%';
+    document.getElementById('fpsVal').innerText = fps;
+    document.getElementById('latVal').innerText = latency;
+}, 1500);
+document.getElementById('netVal').innerText = '24 Mbps';
+document.getElementById('batVal').innerText = '92%';
 
 // ========== LIVE THREAT MAP (Leaflet + Feodo) ==========
 function initThreatMap() {
