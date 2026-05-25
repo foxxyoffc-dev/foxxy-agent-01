@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>FOXXY ULTIMATE 100% • Cyber Intel Agent</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+    <!-- BIOMETRIC LOCK MODAL -->
+    <div id="biometricModal" class="modal" style="display:flex; z-index:9999;">
+        <div class="modal-card" style="text-align:center;">
+            <h3>🔐 SECURE ACCESS</h3>
+            <p>Verifikasi identitas untuk melanjutkan</p>
+            <button id="biometricBtn" class="primary">🖐️ VERIFY</button>
+        </div>
+    </div>
+
+    <!-- SYSTEM STATS PANEL -->
+    <div class="sys-panel" id="sysPanel">
+        <div class="sys-header"><span>⚡ FOXX•SYS</span><button id="toggleSysPanel">🗖</button></div>
+        <div class="sys-body">
+            <div>🖥️ FPS: <span id="fpsVal">--</span></div>
+            <div>🧠 CPU: <span id="cpuVal">--</span>% <div class="bar"><div id="cpuBar" class="bar-fill"></div></div></div>
+            <div>💾 RAM: <span id="ramVal">--</span> <div class="bar"><div id="ramBar" class="bar-fill"></div></div></div>
+            <div>🌐 NET: <span id="netVal">--</span></div>
+            <div>🔋 BATT: <span id="batVal">--</span></div>
+            <div>⏱️ LAT: <span id="latVal">--</span> ms</div>
+            <canvas id="statsMini" width="200" height="40"></canvas>
+        </div>
+    </div>
+
+    <!-- MODE BADGES -->
+    <div id="maxModeBadge" class="mode-badge hidden">🔥 MAX MODE</div>
+    <div id="hackerBadge" class="mode-badge hidden">🕶️ HACKER MODE</div>
+
+    <!-- MAIN APP -->
+    <div class="app">
+        <!-- LEFT ZONE -->
+        <div class="left-zone">
+            <div class="threat-header">
+                <span>⚠️ LIVE CYBER THREAT MAP</span>
+                <button id="satelliteToggle" class="small-btn">🛰️ SATELLITE</button>
+            </div>
+            <div id="threatMap" class="threat-map"></div>
+            <div class="news-box">
+                <div class="section-title">🌍 GLOBAL NEWS + TRUMP</div>
+                <div id="newsFeed" class="news-feed"></div>
+                <div class="button-group">
+                    <button id="startLiveNewsBtn">▶️ LIVE</button>
+                    <button id="stopLiveNewsBtn">⏹️ STOP</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT ZONE -->
+        <div class="right-zone">
+            <div class="market-panel">
+                <div class="market-header">📈 CRYPTO & STOCK</div>
+                <div id="ticker" class="ticker"></div>
+                <canvas id="btcChart" height="100"></canvas>
+            </div>
+            <div class="chat-panel">
+                <div class="chat-header">
+                    <span>🦊 FOXXY AI • ULTIMATE 100%</span>
+                    <div class="chat-actions">
+                        <button id="redAlertBtn" class="icon-btn" style="color:#ff0000;" title="RED ALERT">🔴</button>
+                        <button id="selfDestructBtn" class="icon-btn" style="color:#ff8800;" title="SELF DESTRUCT">💣</button>
+                        <button id="nightVisionBtn" class="icon-btn" title="NIGHT VISION">🌙</button>
+                        <button id="hackerToggle" class="icon-btn" title="HACKER MODE">🕶️</button>
+                        <button id="historyBtn" class="icon-btn" title="HISTORY">📜</button>
+                        <button id="clearChatBtn" class="icon-btn" title="CLEAR CHAT">🗑️</button>
+                    </div>
+                </div>
+                <div id="chatBox" class="chat-box"></div>
+                <div id="voiceWave" class="voice-wave"></div>
+                <div class="input-row">
+                    <input type="text" id="userMsg" placeholder="Ketik /scan, /trace, /hack atau tanya...">
+                    <button id="voiceBtn">🎤</button>
+                    <button id="sendMsgBtn" class="primary">📡 KIRIM</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <div id="historyModal" class="modal"><div class="modal-card"><div class="modal-header">📜 HISTORY</div><div id="historyList"></div><button id="forceClearHistory" class="danger">HAPUS</button><button id="closeHistoryModal">TUTUP</button></div></div>
+    <div id="githubModal" class="modal"><div class="modal-card"><h3>🐙 FOXXY OFFC</h3><button id="openGitBtn">GITHUB</button><button id="closeGitModal">TUTUP</button></div></div>
+
+    <script src="script.js" type="module"></script>
+</body>
+</html>
