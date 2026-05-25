@@ -5,27 +5,11 @@ body {
     color: #0cf;
     height: 100vh;
     overflow: hidden;
-    transition: all 0.3s;
 }
+body.red-alert { animation: redFlash 0.3s infinite; background: #ff000020 !important; }
+@keyframes redFlash { 0% { background: #ff000040; } 100% { background: #ff000000; } }
+body.night-vision { background: radial-gradient(circle at 20% 30%, #0a2e0a, #021002); filter: hue-rotate(80deg) brightness(1.2); }
 
-/* RED ALERT */
-body.red-alert {
-    animation: redFlash 0.3s infinite;
-    background: #ff000020 !important;
-}
-@keyframes redFlash {
-    0% { background: #ff000040; }
-    100% { background: #ff000000; }
-}
-
-/* NIGHT VISION */
-body.night-vision {
-    background: radial-gradient(circle at 20% 30%, #0a2e0a, #021002);
-    filter: hue-rotate(80deg) brightness(1.2);
-}
-body.night-vision .message-content { border-color: #0f0; background: #0a2e0a; }
-
-/* SYS PANEL */
 .sys-panel {
     position: fixed; top: 12px; right: 12px;
     background: #0a0e17dd; backdrop-filter: blur(12px);
@@ -42,19 +26,14 @@ body.night-vision .message-content { border-color: #0f0; background: #0a2e0a; }
     position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
     background: #ff0040; padding: 4px 18px; border-radius: 60px;
     font-weight: bold; font-size: 11px; z-index: 1100;
-    animation: pulse 1s infinite; box-shadow: 0 0 12px #f0f;
+    animation: pulse 1s infinite;
 }
 .hidden { display: none; }
 @keyframes pulse { 0% { opacity: 0.9; } 50% { opacity: 0.6; } }
-
-/* APP LAYOUT */
 .app { display: flex; height: 100vh; gap: 8px; padding: 12px; }
 .left-zone { width: 45%; display: flex; flex-direction: column; gap: 12px; }
 .right-zone { width: 55%; display: flex; flex-direction: column; gap: 12px; }
-
-/* THREAT MAP */
-.threat-header { display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; background: #0a0f1c; border-radius: 20px 20px 0 0; border: 1px solid #f0f; border-bottom: none; }
-.threat-map { background: #010118; border-radius: 0 0 20px 20px; height: 32%; border: 1px solid #f0f; border-top: none; }
+.threat-map { background: #010118; border-radius: 20px; height: 32%; border: 1px solid #f0f; }
 .news-box, .market-panel, .chat-panel {
     background: #0a0f1caa; backdrop-filter: blur(6px);
     border-radius: 20px; border: 1px solid #0cf;
@@ -67,9 +46,8 @@ body.night-vision .message-content { border-color: #0f0; background: #0a2e0a; }
 .ticker { font-size: 12px; font-weight: bold; margin: 6px 0; }
 .chat-panel { display: flex; flex-direction: column; flex: 1; }
 .chat-header { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #0cf; flex-wrap: wrap; gap: 8px; }
-.chat-actions { display: flex; gap: 6px; flex-wrap: wrap; }
-.icon-btn { background: #111c2c; border: 1px solid #0cf; color: #0cf; padding: 4px 10px; border-radius: 20px; cursor: pointer; font-size: 12px; transition: 0.2s; }
-.icon-btn:hover { background: #0cf; color: #000; transform: scale(1.05); }
+.chat-actions { display: flex; gap: 6px; }
+.icon-btn { background: #111c2c; border: 1px solid #0cf; color: #0cf; padding: 4px 10px; border-radius: 20px; cursor: pointer; }
 .small-btn { background: #111c2c; border: 1px solid #0cf; color: #0cf; padding: 2px 8px; border-radius: 12px; cursor: pointer; font-size: 9px; }
 .chat-box { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
 .ai-message, .user-message { display: flex; gap: 8px; max-width: 80%; animation: fadeIn 0.2s; }
@@ -79,7 +57,7 @@ body.night-vision .message-content { border-color: #0f0; background: #0a2e0a; }
 .wave-bar { width: 3px; background: #0cf; border-radius: 2px; transition: 0.03s; }
 .input-row { display: flex; gap: 8px; padding: 10px; border-top: 1px solid #0cf; }
 .input-row input { flex: 1; background: #03070f; border: 1px solid #0cf; color: #0cf; padding: 8px; border-radius: 30px; }
-button { background: #111c2c; border: 1px solid #0cf; color: #0cf; padding: 4px 12px; border-radius: 20px; cursor: pointer; transition: 0.2s; }
+button { background: #111c2c; border: 1px solid #0cf; color: #0cf; padding: 4px 12px; border-radius: 20px; cursor: pointer; }
 button:hover { background: #0cf; color: #000; }
 .primary { background: #0cf; color: #000; font-weight: bold; }
 .modal { position: fixed; top:0; left:0; width:100%; height:100%; background:#000000cc; backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 2000; }
