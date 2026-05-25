@@ -64,3 +64,112 @@ button:hover { background: #0cf; color: #000; }
 .modal-card { background: #0a0f1c; border: 2px solid #0cf; border-radius: 28px; width: 340px; padding: 12px; }
 .danger { background: #a00; border-color: #f66; }
 @keyframes fadeIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; } }
+
+/* ========== RESPONSIVE (UKURAN OTOMATIS) ========== */
+html { font-size: 16px; }
+
+/* HP kecil (max 600px) */
+@media (max-width: 600px) {
+    html { font-size: 12px; }
+    .app {
+        flex-direction: column !important;
+        padding: 5px !important;
+        gap: 5px !important;
+    }
+    .left-zone, .right-zone {
+        width: 100% !important;
+    }
+    .chat-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .chat-actions {
+        justify-content: center;
+        width: 100%;
+    }
+    .icon-btn, button {
+        min-height: 36px;
+        min-width: 36px;
+    }
+    .sys-panel {
+        top: 5px;
+        right: 5px;
+        min-width: 130px;
+        font-size: 8px;
+    }
+    .mode-badge {
+        font-size: 8px;
+        padding: 2px 10px;
+        white-space: nowrap;
+    }
+    #earthCanvas {
+        height: 150px !important;
+    }
+    .threat-map {
+        height: 150px !important;
+    }
+}
+
+/* Tablet (600px - 900px) */
+@media (min-width: 601px) and (max-width: 900px) {
+    .app {
+        gap: 6px;
+        padding: 8px;
+    }
+    .left-zone, .right-zone {
+        width: 50%;
+    }
+}
+
+/* Landscape mode HP */
+@media (max-width: 900px) and (orientation: landscape) {
+    .app {
+        flex-direction: row !important;
+    }
+    .left-zone {
+        width: 45%;
+    }
+    .right-zone {
+        width: 55%;
+    }
+    #earthCanvas {
+        height: 160px !important;
+    }
+    .threat-map {
+        height: 140px !important;
+    }
+    .news-feed {
+        height: 120px !important;
+    }
+}
+
+/* Desktop besar (min 1400px) */
+@media (min-width: 1400px) {
+    .app {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+}
+
+/* Modal responsif */
+.modal-card {
+    width: 90%;
+    max-width: 400px;
+    margin: 20px;
+}
+
+/* Semua elemen agar tidak overflow */
+img, canvas, iframe, video {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Chat messages tidak overflow */
+.chat-box {
+    overflow-y: auto;
+    word-wrap: break-word;
+}
+.message-content {
+    word-break: break-word;
+    max-width: 90%;
+}
