@@ -1,25 +1,17 @@
-// ============================================================
-// FOXXY ULTIMATE 100% - FINAL SCRIPT (NO PASSWORD)
-// Semua fitur badass tetap jalan
-// ============================================================
-
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import L from 'leaflet';
 
-// ========== GLOBAL VARIABLES ==========
+// ========== GLOBAL ==========
 let hacker = false, maxMode = false;
 let chatHistory = [];
 let realtimeInterval = null;
 let isRecording = false, mediaRec = null;
 let btcChart = null;
 let threatMap = null;
-let redAlert = false;
-let nightVision = false;
-let satelliteMode = false;
+let redAlert = false, nightVision = false, satelliteMode = false;
 let alarm = null;
 
-// DOM Elements
 const chatBox = document.getElementById('chatBox');
 const userMsg = document.getElementById('userMsg');
 const sendBtn = document.getElementById('sendMsgBtn');
@@ -28,7 +20,7 @@ const hackerToggle = document.getElementById('hackerToggle');
 const newsFeed = document.getElementById('newsFeed');
 const tickerDiv = document.getElementById('ticker');
 
-// ========== 3D EARTH BACKGROUND ==========
+// ========== 3D EARTH ==========
 const container = document.createElement('div');
 container.style.position = 'fixed'; container.style.top = '0'; container.style.left = '0';
 container.style.width = '100%'; container.style.height = '100%'; container.style.zIndex = '-1';
@@ -72,7 +64,7 @@ setInterval(() => {
 document.getElementById('netVal').innerText = '24 Mbps';
 document.getElementById('batVal').innerText = '92%';
 
-// ========== LIVE THREAT MAP ==========
+// ========== THREAT MAP ==========
 function initThreatMap() {
     threatMap = L.map('threatMap').setView([20, 0], 2);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution: '© OSM' }).addTo(threatMap);
@@ -151,7 +143,7 @@ async function callGroqAI(message) {
     } catch(e) { return 'Groq API error, tapi saya tetap siap membantu, Komandan.'; }
 }
 
-// ========== ENCRYPTION ANIMATION + TERMINAL COMMANDS ==========
+// ========== TERMINAL COMMANDS & ENCRYPTION ==========
 async function sendAgentMessage() {
     const msg = userMsg.value.trim();
     if (!msg) return;
@@ -238,14 +230,14 @@ document.getElementById('nightVisionBtn').onclick = () => {
     addMessage(nightVision ? '🌙 Night Vision aktif.' : '☀️ Mode normal.', false);
 };
 
-// ========== MODE MAKSIMAL OTOMATIS ==========
+// ========== MAX MODE ==========
 async function detectMaxMode() {
     try {
         const ipRes = await fetch('https://ipapi.co/json/');
         const ipData = await ipRes.json();
         const urlParams = new URLSearchParams(window.location.search);
         const keyword = urlParams.get('key') || '';
-        if (ipData.ip === 'YOUR_DEV_IP' || keyword === 'foxxy-ultimate' || keyword === 'maxmode') {
+        if (ipData.ip === 'YOUR_DEV_IP' || keyword === 'foxxy-ultimate') {
             maxMode = true;
             document.getElementById('maxModeBadge').classList.remove('hidden');
             addMessage('🔥 MAX MODE aktif. Akses intelijen global penuh.', false);
@@ -256,20 +248,22 @@ detectMaxMode();
 
 // ========== VOICE ==========
 async function startVoice() {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    const ctx = new AudioContext();
-    const src = ctx.createMediaStreamSource(stream);
-    const analyser = ctx.createAnalyser();
-    analyser.fftSize = 64;
-    src.connect(analyser);
-    const data = new Uint8Array(analyser.frequencyBinCount);
-    function draw() { if (!isRecording) return; analyser.getByteFrequencyData(data); const waveDiv = document.getElementById('voiceWave'); waveDiv.innerHTML = ''; for (let i=0;i<24;i++) { let b = document.createElement('div'); b.className = 'wave-bar'; b.style.height = (data[i]/3)+'px'; waveDiv.appendChild(b); } requestAnimationFrame(draw); }
-    mediaRec = new MediaRecorder(stream);
-    mediaRec.start();
-    isRecording = true;
-    voiceBtn.innerText = '⏹️';
-    draw();
-    setTimeout(() => stopVoice(), 5000);
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const ctx = new AudioContext();
+        const src = ctx.createMediaStreamSource(stream);
+        const analyser = ctx.createAnalyser();
+        analyser.fftSize = 64;
+        src.connect(analyser);
+        const data = new Uint8Array(analyser.frequencyBinCount);
+        function draw() { if (!isRecording) return; analyser.getByteFrequencyData(data); const waveDiv = document.getElementById('voiceWave'); waveDiv.innerHTML = ''; for (let i=0;i<24;i++) { let b = document.createElement('div'); b.className = 'wave-bar'; b.style.height = (data[i]/3)+'px'; waveDiv.appendChild(b); } requestAnimationFrame(draw); }
+        mediaRec = new MediaRecorder(stream);
+        mediaRec.start();
+        isRecording = true;
+        voiceBtn.innerText = '⏹️';
+        draw();
+        setTimeout(() => stopVoice(), 5000);
+    } catch(e) { addMessage('❌ Microphone access denied.', false); }
 }
 function stopVoice() { if (mediaRec && isRecording) { mediaRec.stop(); mediaRec.stream.getTracks().forEach(t=>t.stop()); isRecording=false; voiceBtn.innerText='🎤'; document.getElementById('voiceWave').innerHTML=''; } }
 voiceBtn.onclick = () => isRecording ? stopVoice() : startVoice();
@@ -290,5 +284,4 @@ window.liveNewsActive = true;
 document.getElementById('startLiveNewsBtn').onclick = () => { window.liveNewsActive = true; if (realtimeInterval) clearInterval(realtimeInterval); realtimeInterval = setInterval(fetchGlobalNews, 30000); addMessage('📡 Live news feed diaktifkan.', false); };
 document.getElementById('stopLiveNewsBtn').onclick = () => { window.liveNewsActive = false; if (realtimeInterval) clearInterval(realtimeInterval); addMessage('⏹️ Live news feed dinonaktifkan.', false); };
 
-// Pesan sambutan
-addMessage('🦊 Foxxy AI siap membantu, Komandan! Coba ketik /scan, /trace, /hack, atau tanya berita & crypto.', false);
+addMessage('🦊 Foxxy AI siap, Komandan! Coba /scan, /trace, /hack', false);
