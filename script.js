@@ -28,11 +28,11 @@ const hackerToggle = document.getElementById('hackerToggle');
 const newsFeed = document.getElementById('newsFeed');
 const tickerDiv = document.getElementById('ticker');
 
-// ========== PASSWORD DENGAN 3 PERCOBAAN (AUTO REDIRECT) ==========
+// ========== PASSWORD DENGAN 3 PERCOBAAN (VERSI INPUT BOX) ==========
 let passwordAttempts = 0;
 
-function checkBiometric() {
-    const inputPass = prompt("🔐 MASUKKAN KODE AKSES KOMANDAN:");
+function verifyPassword() {
+    const inputPass = document.getElementById("passwordInput").value;
     
     if (inputPass === "foxxy2024") {
         document.getElementById("biometricModal").style.display = "none";
@@ -48,7 +48,7 @@ function checkBiometric() {
             window.location.href = "https://www.google.com";
         } else {
             alert(`❌ AKSES DITOLAK! Kode salah.\n⚠️ Sisa percobaan: ${remaining} kali lagi.`);
-            checkBiometric();
+            document.getElementById("passwordInput").value = "";
         }
     }
 }
@@ -57,16 +57,27 @@ function startFoxxySystems() {
     console.log("✅ Sistem Foxxy aktif, Komandan.");
 }
 
-// Pasang event listener ke tombol verify
-const verifyBtn = document.getElementById("biometricBtn");
-if (verifyBtn) verifyBtn.onclick = checkBiometric;
+// Event listeners untuk password modal
+document.addEventListener("DOMContentLoaded", function() {
+    const verifyBtn = document.getElementById("biometricBtn");
+    if (verifyBtn) verifyBtn.onclick = verifyPassword;
+    
+    const pwdInput = document.getElementById("passwordInput");
+    if (pwdInput) {
+        pwdInput.addEventListener("keypress", function(e) {
+            if (e.key === "Enter") verifyPassword();
+        });
+    }
+});
 
-// Reset counter jika modal ditutup paksa (klik di luar modal)
+// Reset counter jika modal ditutup paksa
 const modalBg = document.getElementById("biometricModal");
 if (modalBg) {
     modalBg.addEventListener("click", function(e) {
         if (e.target === modalBg) {
             passwordAttempts = 0;
+            const inputField = document.getElementById("passwordInput");
+            if (inputField) inputField.value = "";
         }
     });
 }
@@ -98,7 +109,7 @@ function animate() { requestAnimationFrame(animate); controls.update(); ring.rot
 animate();
 window.addEventListener('resize', () => { renderer.setSize(window.innerWidth, window.innerHeight); camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); });
 
-// ========== SYSTEM STATS (DUMMY REAL-TIME) ==========
+// ========== SYSTEM STATS ==========
 let fps = 60, cpu = 18, ram = 42, latency = 38;
 setInterval(() => {
     cpu = Math.min(92, cpu + (Math.random() - 0.5) * 4);
@@ -115,7 +126,7 @@ setInterval(() => {
 document.getElementById('netVal').innerText = '24 Mbps';
 document.getElementById('batVal').innerText = '92%';
 
-// ========== LIVE THREAT MAP (Leaflet + Feodo) ==========
+// ========== LIVE THREAT MAP ==========
 function initThreatMap() {
     threatMap = L.map('threatMap').setView([20, 0], 2);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution: '© OSM' }).addTo(threatMap);
@@ -151,7 +162,7 @@ document.getElementById('satelliteToggle').onclick = () => {
     addMessage(`🛰️ Satellite view ${satelliteMode ? 'aktif' : 'nonaktif'}`, false);
 };
 
-// ========== GLOBAL NEWS + TRUMP ==========
+// ========== GLOBAL NEWS ==========
 let newsCache = [];
 async function fetchGlobalNews() {
     try {
@@ -199,7 +210,6 @@ async function sendAgentMessage() {
     const msg = userMsg.value.trim();
     if (!msg) return;
     
-    // TERMINAL COMMANDS
     if (msg.startsWith('/')) {
         const cmd = msg.slice(1).toLowerCase();
         if (cmd === 'scan') addMessage('🔍 Scanning network...\n✅ 3 devices found.\n⚠️ 1 unknown threat detected.', false);
@@ -213,7 +223,6 @@ async function sendAgentMessage() {
     addMessage(msg, true);
     userMsg.value = '';
     
-    // ENCRYPTION ANIMATION
     const encryptDiv = document.createElement('div');
     encryptDiv.className = 'ai-message';
     encryptDiv.innerHTML = `<div class="message-content">🔒 Encrypting message... 🔑</div>`;
@@ -249,7 +258,7 @@ document.getElementById('redAlertBtn').onclick = () => {
             alarm.loop = true;
         }
         alarm.play();
-        addMessage('🔴 RED ALERT! Emergency protocol activated. Ancaman siber terdeteksi.', false);
+        addMessage('🔴 RED ALERT! Emergency protocol activated.', false);
     } else {
         document.body.classList.remove('red-alert');
         if (alarm) { alarm.pause(); alarm.currentTime = 0; }
@@ -259,7 +268,7 @@ document.getElementById('redAlertBtn').onclick = () => {
 
 // ========== SELF DESTRUCT ==========
 document.getElementById('selfDestructBtn').onclick = () => {
-    if (confirm('⚠️ SELF-DESTRUCT: Semua data chat akan dihapus secara permanen. Lanjutkan?')) {
+    if (confirm('⚠️ SELF-DESTRUCT: Hapus semua data chat secara permanen?')) {
         chatBox.innerHTML = '';
         for (let i = 5; i > 0; i--) {
             setTimeout(() => {
@@ -271,7 +280,7 @@ document.getElementById('selfDestructBtn').onclick = () => {
             chatHistory = [];
             localStorage.removeItem('foxxy_history');
             chatBox.innerHTML = '<div class="ai-message"><div class="message-content">💀 System wiped. Operasi dimulai ulang, Komandan.</div></div>';
-            addMessage('🔄 Sistem direboot. Siap menerima perintah baru.', false);
+            addMessage('🔄 Sistem direboot.', false);
         }, 1800);
     }
 };
@@ -280,7 +289,7 @@ document.getElementById('selfDestructBtn').onclick = () => {
 document.getElementById('nightVisionBtn').onclick = () => {
     nightVision = !nightVision;
     document.body.classList.toggle('night-vision', nightVision);
-    addMessage(nightVision ? '🌙 Night Vision aktif. Mode termal diaktifkan.' : '☀️ Kembali ke mode normal.', false);
+    addMessage(nightVision ? '🌙 Night Vision aktif.' : '☀️ Mode normal.', false);
 };
 
 // ========== MODE MAKSIMAL OTOMATIS ==========
